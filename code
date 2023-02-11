@@ -1,0 +1,63 @@
+import android.os.Handler;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.ScrollView;
+
+public class AutoScroller {
+
+  private ScrollView scrollView;
+  private Handler handler;
+  private int scrollAmount;
+  private int delay;
+  private boolean isScrolling;
+
+  public AutoScroller(ScrollView scrollView, int scrollAmount, int delay) {
+    this.scrollView = scrollView;
+    this.scrollAmount = scrollAmount;
+    this.delay = delay;
+    this.handler = new Handler();
+    this.isScrolling = false;
+    
+    scrollView.setOnTouchListener(new View.OnTouchListener() {
+      @Override
+      public boolean onTouch(View v, MotionEvent event) {
+        switch (event.getAction()) {
+          case MotionEvent.ACTION_DOWN:
+            stop();
+            break;
+          case MotionEvent.ACTION_UP:
+            start();
+            break;
+        }
+        return true;
+      }
+    });
+  }
+
+  public void start() {
+    if (isScrolling) {
+      return;
+    }
+    isScrolling = true;
+    handler.postDelayed(new Runnable() {
+      public void run() {
+        scrollView.scrollBy(0, scrollAmount);
+        handler.postDelayed(this, delay);
+      }
+    }, delay);
+  }
+
+  public void stop() {
+    isScrolling = false;
+    handler.removeCallbacksAndMessages(null);
+  }
+
+  public void setSpeed(int scrollAmount, int delay) {
+    this.scrollAmount = scrollAmount;
+    this.delay = delay;
+    if (isScrolling) {
+      stop();
+      start();
+    }
+  }
+}
