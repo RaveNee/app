@@ -1,0 +1,14 @@
+// Get a reference to your ScrollView
+ScrollView scrollView = findViewById(R.id.scroll_view);
+
+// Create an instance of the AutoScroller class with a scrolling speed of 10 pixels every 100 milliseconds
+AutoScroller autoScroller = new AutoScroller(scrollView, 10, 100);
+
+// Start the automatic scrolling
+autoScroller.start();
+
+// Change the scrolling speed to 20 pixels every 50 milliseconds
+autoScroller.setSpeed(20, 50);
+
+// Stop the automatic scrolling
+autoScroller.stop();
